@@ -1,4 +1,5 @@
 # 職涯助理 AI (Career Assistant AI)
+![AGENT](https://github.com/user-attachments/assets/13759682-fa58-44a6-aa9d-de2e768211d9)
 
 這是一個使用 AI 技術來協助求職者準備面試和優化履歷的專案。本專案使用 pydantic-ai 框架開發，可以：
 
@@ -19,30 +20,45 @@
 ## 安裝需求
 
 - Python 3.9+
+- Node.js 16+
 - Ollama 本地模型服務
-- 其他依賴請參考 requirements.txt
+- 其他依賴請參考 requirements.txt 和 package.json
 
 ## 快速開始
 
-1. 安裝依賴：
+1. 安裝後端依賴：
 ```bash
 pip install -r requirements.txt
 ```
 
-2. 下載 Qwen 模型：
+2. 安裝前端依賴：
+```bash
+cd frontend
+npm install
+```
+
+3. 下載 Qwen 模型：
 ```bash
 ollama pull qwen2.5:7b
 ```
 
-3. 啟動 Ollama 服務：
+4. 啟動 Ollama 服務：
 ```bash
 ollama serve
 ```
 
-4. 運行應用：
+5. 啟動後端服務：
 ```bash
-uvicorn app.main:app --reload
+python app.py
 ```
+
+6. 啟動前端服務：
+```bash
+cd frontend
+npm start
+```
+
+現在您可以通過瀏覽器訪問 http://localhost:3000 使用應用程式。
 
 ## API 端點
 
@@ -54,7 +70,6 @@ uvicorn app.main:app --reload
   - 職缺標題
   - 職缺描述
   - 職缺要求列表
-  - 問題數量（可選，預設 5 題）
 - 輸出：
   - 履歷分析結果
   - 面試問題列表
@@ -77,7 +92,6 @@ uvicorn app.main:app --reload
 - 輸入：
   - 履歷文件
   - 職缺資訊
-  - 問題數量（可選，預設 5 題）
 
 #### 2.3 職涯建議
 - 端點：`POST /career-advice`
@@ -85,56 +99,3 @@ uvicorn app.main:app --reload
 - 輸入：
   - 履歷文件
   - 職缺資訊
-
-## 專案結構
-
-```
-career_assistant/
-├── app/
-│   ├── main.py              # FastAPI 應用程式入口
-│   ├── models/
-│   │   └── career_agent.py  # AI Agent 模型定義
-│   ├── services/            # 業務邏輯層
-│   └── utils/              # 工具函數
-├── tests/                  # 測試檔案
-├── requirements.txt        # 專案依賴
-└── README.md              # 專案說明
-```
-
-## 使用範例
-
-1. 使用 Swagger UI 測試 API：
-   - 訪問 `http://localhost:8000/docs`
-   - 選擇 `/analyze-career` 端點（推薦）
-   - 上傳履歷文件並填寫相關資訊
-
-2. 使用 curl 測試整合分析 API：
-```bash
-curl -X POST "http://localhost:8000/analyze-career" \
-     -H "accept: application/json" \
-     -H "Content-Type: multipart/form-data" \
-     -F "resume=@your_resume.pdf" \
-     -F "job_title=資深工程師" \
-     -F "job_description=職缺描述" \
-     -F "job_requirements=要求1,要求2,要求3" \
-     -F "question_count=5"
-```
-
-## 注意事項
-
-- 確保 Ollama 服務正在運行
-- 建議使用 Qwen 2.5 7B 模型以獲得最佳效果
-- 大型 PDF 文件可能需要較長處理時間
-- 請確保上傳的履歷文件格式正確
-
-## 未來規劃
-
-- [ ] 添加更多模型支援
-- [ ] 實現對話式介面
-- [ ] 添加更多職涯分析工具
-- [ ] 支援更多文件格式
-- [ ] 添加使用者認證功能
-
-## 授權
-
-MIT License 
